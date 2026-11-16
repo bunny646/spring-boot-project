@@ -1,7 +1,10 @@
 name: Hello Spring App
 
 on:
+  workflow_dispatch:
   push:
+    paths:
+      - hello-spring/**
 
 permissions:
   contents: read
