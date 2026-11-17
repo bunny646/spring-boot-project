@@ -56,7 +56,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/hello-spring:latest
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/hello-spring:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/hello-spring:latest
 
   deploy-to-eks:
     runs-on: ubuntu-latest
@@ -85,7 +87,10 @@ jobs:
         run: kubectl get nodes 
 
       - name: Deploy to EKS
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
           kubectl apply -f kubernetes/deployment.yaml
+          kubectl set image deployment/hello-spring hello-spring="${DOCKER_USERNAME}/hello-spring:${GITHUB_SHA}"
           kubectl rollout status deployment/hello-spring
           
