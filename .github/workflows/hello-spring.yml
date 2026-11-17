@@ -4,7 +4,11 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - hello-spring/**
+      - .github/workflows/hello-spring.yml
+      - Dockerfile
+      - pom.xml
+      - src/**
+      - kubernetes/**
 
 permissions:
   contents: read
